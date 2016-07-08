@@ -1,0 +1,35 @@
+1. What additional properties did you to your models and why?
+
+I tried to implement a Hangman game. I modified ‘Guess a Number’ application. The properties I added to Hangman models are:
+
+[Game Model]
+
+output_words(array) : This property contains matched words and blank that looks like [ H, _, _, G,M,_,N ].
+
+matches(array): This property contains matched words.
+
+misses(array): This property contains missed words.
+
+score: This property contains a game score. At first, I put this property on the Score Model, but I moved to Game Model. Because Score Model keep individual users total score and number of wins etc. On the other hand Game Model keep a game’s score.
+
+[Score Model]
+
+number of wins: This contains number of wins by a user. This property needs to be calculated win ratio.
+
+number of losses: This contains number of losses by a user. This property needs to be calculated win ratio.
+
+win ratio: number of wins / number of games * 100
+
+score: total score by a user.
+
+[History Model]
+
+number of tries : Order of attempt.
+
+guess: guess word.
+
+message: message from system.
+
+2. What were some of the trade-offs or struggles you faced when implementing the new game logic?
+
+As I mentioned before, in the beginning I designed Score Model one-to-one relationship with Game Model. But I changed Score Model to one-to-many relationship with Game Model because I need to get ranking by users. Of cause I could separate Game and Score for a game. And I could add up a User-Score Model. At last I decided to make models simple.
