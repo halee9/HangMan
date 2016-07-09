@@ -92,7 +92,7 @@ class HangManApi(remote.Service):
         game = get_by_urlsafe(request.urlsafe_game_key, Game)
         if game:
             if game.game_over:
-                return StringMessage(message='The game was over! You can\'t remove completed game')
+                raise endpoints.ForbiddenException('Illegal action: Game is already over.')
             else:
                 game.key.delete()
                 return StringMessage(message='The game was deleted')
