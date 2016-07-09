@@ -3,6 +3,10 @@ Hangman is a simple guessing game. Each game begins with a random 'target'
 word provided by system. 'Guess' are sent to the 'make_guess' endpoint which will reply
 with either: 'match', 'miss', 'you win', or 'game over' (if 6 misses is reached).
 
+##Game Scoring
+Your score depends on how many word you've missed. You can get 100 points when you
+win, but you can get additional 100 points if you never missed. Your ranking is based
+on how many times you win and wins games ratio.
 
 ##Files Included:
  - api.py: Contains endpoints and game playing logic.
@@ -44,8 +48,8 @@ with either: 'match', 'miss', 'you win', or 'game over' (if 6 misses is reached)
     - Description: Returns all of an individual User's games.
 
  - **cancel_game**
-    - Path: 'game/{urlsafe_game_key}/cancel'
-    - Method: GET
+    - Path: 'game/{urlsafe_game_key}'
+    - Method: DELETE
     - Parameters: urlsafe_game_key
     - Returns: Message confirming deletion of the Game.
     - Description: Cancel game if the game is not over.

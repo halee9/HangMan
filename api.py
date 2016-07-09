@@ -12,7 +12,7 @@ from google.appengine.api import memcache
 from google.appengine.api import taskqueue
 
 from models import User, Game, Score, History
-from models import StringMessage, GameForm, ScoreForms, GameForms, HistoryForms
+from forms import StringMessage, GameForm, ScoreForms, GameForms, HistoryForms
 from utils import get_by_urlsafe
 
 NEW_GAME_REQUEST = endpoints.ResourceContainer(user_name=messages.StringField(1,required=True))
@@ -84,9 +84,9 @@ class HangManApi(remote.Service):
         #--------------------------
     @endpoints.method(request_message=CANCEL_GAME_REQUEST,
                       response_message=StringMessage,
-                      path='game/{urlsafe_game_key}/cancel',
+                      path='game/{urlsafe_game_key}',
                       name='cancel_game',
-                      http_method='GET')
+                      http_method='DELETE')
     def cancel_game(self, request):
         """Cancel game if the game is not over"""
         game = get_by_urlsafe(request.urlsafe_game_key, Game)

@@ -2,7 +2,6 @@
 
 """main.py - This file contains handlers that are called by taskqueue and/or
 cronjobs."""
-import logging
 
 import webapp2
 from google.appengine.api import mail, app_identity
@@ -16,8 +15,10 @@ class SendReminderEmail(webapp2.RequestHandler):
         """Send a reminder email to each User with an email about games.
         Called every hour using a cron job"""
         app_id = app_identity.get_application_id()
-        games = Game.query(Game.game_over == False)
+        #games = Game.query(Game.game_over == False).group_by(Game.user)
+        games = Game.query(Game.game_over == False, projection=[Game.user], distinct=True).order(Game.user)
         for game in games:
+            print game
             user = User.query(User.key == game.user).get()
             subject = 'This is a reminder!'
             body = 'Hello {}, you have an incomplete Hangman!'.format(user.name)
@@ -29,14 +30,6 @@ class SendReminderEmail(webapp2.RequestHandler):
                            body)
 
 
-class UpdateAverageMovesRemaining(webapp2.RequestHandler):
-    def post(self):
-        """Update game listing announcement in memcache."""
-        GuessANumberApi._cache_average_attempts()
-        self.response.set_status(204)
-
-
 app = webapp2.WSGIApplication([
     ('/crons/send_reminder', SendReminderEmail),
-    ('/tasks/cache_average_attempts', UpdateAverageMovesRemaining),
 ], debug=True)
